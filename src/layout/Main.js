@@ -4,34 +4,31 @@ import MovieList from '../components/MovieList';
 import Preloader from '../components/Preloader';
 import Search from '../components/Search';
 
-class Main extends React.Component
-{
+class Main extends React.Component {
 	state =
 		{
-			movies:[]
+			movies: []
 		}
-	componentDidMount()
-	{
-		//эта функция неявно вызывается всякий раз, когда компонент смонтировался на странице
-		fetch('https://www.omdbapi.com/?s=The%20Transporter&apikey=365ae90a')
-			.then(response => response.json())
-			.then(data => this.setState({movies:data.Search}))
-	}
-	searchMovie = (str, type = 'all') => {
-		fetch(`https://www.omdbapi.com/?s=${str}${type !== 'all' ? `&type={type}`:''}&apikey=365ae90a`)
+	componentDidMount() {
+		//Эта функция неявно вызывается всякий раз, когда компонент смонтировался на страницу
+		fetch('http://www.omdbapi.com/?s=The%20Transporter&apikey=94dbc433')
 			.then(response => response.json())
 			.then(data => this.setState({ movies: data.Search }))
 	}
-	render()
-	{
+	searchMovie = (str, type = 'all') => {
+		fetch(`http://www.omdbapi.com/?s=${str}${type !== 'all' ? `&type=${type}` : ''}&apikey=94dbc433`)
+			.then(response => response.json())
+			.then(data => this.setState({ movies: data.Search }));
+	}
+	render() {
 		return (
 			<main>
-				<Search searchMovie={ this.searchMovie} />
+				<Search searchMovie={this.searchMovie} />
 				{
-					this.state.movies != null ? <h1>Введите поисковый запрос</h1>:
-					this.state.movies.length == 0 ?
-					<Preloader /> :
-					<MovieList movies={this.state.movies} />					
+					this.state.movies == null ? <h1>Введите поисковый запрос</h1> :
+						this.state.movies.length == 0 ?
+							<Preloader /> :
+							<MovieList movies={this.state.movies} />
 				}
 			</main>
 		)
