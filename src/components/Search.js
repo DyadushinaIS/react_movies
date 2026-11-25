@@ -43,9 +43,22 @@ class Search extends React.Component {
 	}
 	render() {
 		let itemsPerPage = 10;
-		let totalPages = this.props.totalItems / itemsPerPage;
-		const lastIndex = totalPages <= 10 ? totalPages + 1 : this.state.page + itemsPerPage;
-		const firstIndex = totalPages <= 10 ? lastIndex - itemsPerPage + lastIndex + 1 : lastIndex - itemsPerPage;
+		let totalPages = Math.ceil (this.props.totalItems / itemsPerPage); //округление вверх
+		const pagesCount = 10; // сколько кнопок-страниц показываем
+		let firstIndex, lastIndex;
+
+		if (totalPages <= pagesCount) {
+			firstIndex = 1;
+			lastIndex = totalPages + 1;
+		} else {
+			firstIndex = this.state.page - Math.floor(pagesCount / 2);
+			if (firstIndex < 1) firstIndex = 1;
+			if (firstIndex + pagesCount - 1 > totalPages) {
+				firstIndex = totalPages - pagesCount + 1;
+			}
+			lastIndex = firstIndex + pagesCount;
+		}
+
 		let num = [];
 		for (let i = 1; i < totalPages; i++) {
 			num.push(i);
